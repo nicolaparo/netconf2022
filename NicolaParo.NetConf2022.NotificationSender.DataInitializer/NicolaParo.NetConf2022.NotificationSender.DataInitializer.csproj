@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bogus" Version="34.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NicolaParo.NetConf2022.NotificationSender.Configuration\NicolaParo.NetConf2022.NotificationSender.Configuration.csproj" />
+    <ProjectReference Include="..\NicolaParo.NetConf2022.NotificationSender.Services\NicolaParo.NetConf2022.NotificationSender.Services.csproj" />
+  </ItemGroup>
+
+</Project>
