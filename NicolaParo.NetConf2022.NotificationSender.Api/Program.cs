@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using NicolaParo.NetConf2022.NotificationSender.Configuration;
 using NicolaParo.NetConf2022.NotificationSender.Services;
-using Telegram.Bot.Requests.Abstractions;
 
 namespace NicolaParo.NetConf2022.NotificationSender.Api
 {

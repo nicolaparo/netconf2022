@@ -1,0 +1,46 @@
+﻿@page "/contacts"
+@using NicolaParo.NetConf2022.NotificationSender.Models;
+@using NicolaParo.NetConf2022.NotificationSender.Services.Repositories;
+@using Microsoft.AspNetCore.Components.QuickGrid;
+
+@inject IContactsRepository contactsRepository
+
+<style>
+    button.col-title {
+        background: none;
+        border: none;
+        font-weight: 600;
+    }
+</style>
+
+<QuickGrid Items="contacts" Class="table">
+    <TemplateColumn Context="c" Title="Id">
+        <span title="@c.Id">
+            @(c.Id.ToString()[..8])...
+        </span>
+    </TemplateColumn>
+    <PropertyColumn Sortable=true Property="c => c.FirstName" Title="First Name" />
+    <PropertyColumn Sortable=true Property="c => c.LastName" Title="Last Name" />
+    <TemplateColumn Context="c" Title="Email">
+        @c.Email?.Address
+    </TemplateColumn>
+    <TemplateColumn Context="c" Title="Phone Number">
+        @c.Phone?.Number
+    </TemplateColumn>
+    <TemplateColumn Context="c" Title="Telegram ChatId">
+        @c.Telegram?.ChatId
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private IQueryable<Contact> contacts;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            contacts = (await contactsRepository.GetContactsAsync()).AsQueryable();
+            StateHasChanged();
+        }
+    }
+}
