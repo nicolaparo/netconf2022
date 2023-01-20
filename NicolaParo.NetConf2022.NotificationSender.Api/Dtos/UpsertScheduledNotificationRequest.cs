@@ -1,6 +1,6 @@
 ﻿namespace NicolaParo.NetConf2022.NotificationSender.Api.Dtos
 {
-    public record UpsertScheduledNotificationRequest
+    public record UpsertScheduledNotificationRequestDto
     {
         public string Title { get; set; }
         public string Text { get; set; }
