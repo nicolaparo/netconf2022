@@ -1,7 +1,17 @@
 ﻿@page "/scheduled-notifications"
 
-<h3>Scheduled Notifications</h3>
+@inject IJSRuntime jsRuntime
+@implements IDisposable
+
+<h3>Hello World!</h3>
 
 @code {
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    public void Dispose() { }
 
 }

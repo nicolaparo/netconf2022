@@ -5,35 +5,38 @@
 
 @inject IContactsRepository contactsRepository
 
-<style>
-    button.col-title {
-        background: none;
-        border: none;
-        font-weight: 600;
-    }
-</style>
+<div class="mx-auto mb-4 w-50">
+    <input type="text" class="form-control" placeholder="Search..." value="@searchValue" @onchange="(e) => searchValue = e.Value.ToString() " />
+</div>
 
-<QuickGrid Items="contacts" Class="table">
-    <TemplateColumn Context="c" Title="Id">
-        <span title="@c.Id">
-            @(c.Id.ToString()[..8])...
-        </span>
-    </TemplateColumn>
-    <PropertyColumn Sortable=true Property="c => c.FirstName" Title="First Name" />
-    <PropertyColumn Sortable=true Property="c => c.LastName" Title="Last Name" />
-    <TemplateColumn Context="c" Title="Email">
-        @c.Email?.Address
-    </TemplateColumn>
-    <TemplateColumn Context="c" Title="Phone Number">
-        @c.Phone?.Number
-    </TemplateColumn>
-    <TemplateColumn Context="c" Title="Telegram ChatId">
-        @c.Telegram?.ChatId
-    </TemplateColumn>
-</QuickGrid>
+<div style="overflow: auto; height: 25em">
+    <QuickGrid Items="contacts" Class="table" Virtualize=true>
+        <TemplateColumn Context="c" Title="Id">
+            <span title="@c.Id">
+                @(c.Id.ToString()[..8])...
+            </span>
+        </TemplateColumn>
+        <PropertyColumn Sortable=true Property="c => c.FirstName" Title="First Name" />
+        <PropertyColumn Sortable=true Property="c => c.LastName" Title="Last Name" />
+        <TemplateColumn Context="c" Title="Email">
+            @c.Email?.Address
+        </TemplateColumn>
+        <TemplateColumn Context="c" Title="Phone Number">
+            @c.Phone?.Number
+        </TemplateColumn>
+        <TemplateColumn Context="c" Title="Telegram ChatId">
+            @c.Telegram?.ChatId
+        </TemplateColumn>
+    </QuickGrid>
+</div>
+
+<Paginator Value="paginationState" />
 
 @code {
+    private string searchValue;
+
     private IQueryable<Contact> contacts;
+    private PaginationState paginationState = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -43,4 +46,5 @@
             StateHasChanged();
         }
     }
+
 }
