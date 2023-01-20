@@ -108,7 +108,7 @@ namespace NicolaParo.NetConf2022.NotificationSender.Api
 
                 return Results.Ok(result);
             });
-            scheduledNotifications.MapPost("/send-to-all-telegram", async (IScheduledNotificationsRepository cr, IContactsRepository cont, [FromBody] UpsertScheduledNotificationRequestForContactDto request) =>
+            scheduledNotifications.MapPost("/send-to-all-telegram", async (IScheduledNotificationsRepository cr, IContactsRepository cont, [FromBody] UpsertScheduledNotificationRequestDto request) =>
             {
                 if (request is null)
                     return Results.BadRequest("Invalid request");
