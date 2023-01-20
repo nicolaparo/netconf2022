@@ -5,6 +5,7 @@ using NicolaParo.NetConf2022.NotificationSender.Models;
 using NicolaParo.NetConf2022.NotificationSender.Services;
 using NicolaParo.NetConf2022.NotificationSender.Services.NotificationServices;
 using NicolaParo.NetConf2022.NotificationSender.Services.Repositories;
+using Telegram.Bot.Types;
 
 namespace NicolaParo.NetConf2022.NotificationSender.Api
 {
@@ -107,7 +108,32 @@ namespace NicolaParo.NetConf2022.NotificationSender.Api
 
                 return Results.Ok(result);
             });
-            scheduledNotifications.MapPost("", async (IScheduledNotificationsRepository cr, IContactsRepository cont, [FromBody] UpsertScheduledNotificationRequestDto request) =>
+            scheduledNotifications.MapGet("/send-to-all-telegram", async (IScheduledNotificationsRepository cr, IContactsRepository cont, [FromBody] UpsertScheduledNotificationRequestForContactDto request) =>
+            {
+                if (request is null)
+                    return Results.BadRequest("Invalid request");
+
+                var contacts = await cont.GetContactsAsync(c => c.Telegram != null);
+
+                foreach(var contact in contacts)
+                {
+                    var scheduledNotfication = new ScheduledNotificationInfo
+                    {
+                        Notification = new Notification
+                        {
+                            Text = request.Text,
+                            Title = request.Title,
+                            Contact = contact
+                        },
+                        ScheduleSendAt = request.SendAt
+                    };
+
+                    await cr.InsertScheduledNotificationAsync(scheduledNotfication);
+                }
+
+                return Results.Ok();
+            });
+            scheduledNotifications.MapPost("", async (IScheduledNotificationsRepository cr, IContactsRepository cont, [FromBody] UpsertScheduledNotificationRequestForContactDto request) =>
             {
                 if (request is null)
                     return Results.BadRequest("Invalid request");
@@ -131,7 +157,7 @@ namespace NicolaParo.NetConf2022.NotificationSender.Api
 
                 return Results.Ok(result);
             });
-            scheduledNotifications.MapPut("{id}", async (IScheduledNotificationsRepository cr, IContactsRepository cont, Guid id, [FromBody] UpsertScheduledNotificationRequestDto request) =>
+            scheduledNotifications.MapPut("{id}", async (IScheduledNotificationsRepository cr, IContactsRepository cont, Guid id, [FromBody] UpsertScheduledNotificationRequestForContactDto request) =>
             {
                 if (request is null)
                     return Results.BadRequest("Invalid request");
