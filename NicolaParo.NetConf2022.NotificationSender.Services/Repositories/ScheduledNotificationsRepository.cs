@@ -22,18 +22,15 @@ namespace NicolaParo.NetConf2022.NotificationSender.Services.Repositories
 
     public class ScheduledNotificationsRepository : IScheduledNotificationsRepository
     {
-        private readonly string databaseFileName;
+        private readonly NotificationSenderContext context;
 
-        public ScheduledNotificationsRepository(string scheduledNotificationsFileName)
+        public ScheduledNotificationsRepository(NotificationSenderContext context)
         {
-            this.databaseFileName = scheduledNotificationsFileName;
+            this.context = context;
         }
-
-        private NotificationSenderContext CreateContext() => new NotificationSenderContext(databaseFileName);
 
         public Task<ScheduledNotification[]> GetScheduledNotificationsAsync(Expression<Func<ScheduledNotification, bool>> predicate, int skip = 0, int? take = null)
         {
-            using var context = CreateContext();
 
             var scheduledNotificationsQuery = context.ScheduledNotifications.Query();
 
@@ -49,31 +46,25 @@ namespace NicolaParo.NetConf2022.NotificationSender.Services.Repositories
 
             if (take is not null)
                 scheduledNotificationsQueryResult = scheduledNotificationsQueryResult.Limit(take.Value);
-                
+
             var scheduledNotifications = scheduledNotificationsQueryResult.ToArray();
 
             return Task.FromResult(scheduledNotifications);
         }
         public Task<ScheduledNotification[]> GetScheduledNotificationsAsync()
         {
-            using var context = CreateContext();
-
             var scheduledNotifications = context.ScheduledNotifications.FindAll().ToArray();
 
             return Task.FromResult(scheduledNotifications);
         }
         public Task<ScheduledNotification> GetScheduledNotificationByIdAsync(Guid id)
         {
-            using var context = CreateContext();
-
             var scheduledNotification = context.ScheduledNotifications.FindOne(sn => sn.Id == id);
 
             return Task.FromResult(scheduledNotification);
         }
         public async Task<Guid> InsertScheduledNotificationAsync(ScheduledNotificationInfo scheduledNotificationData)
         {
-            using var context = CreateContext();
-
             var scheduledNotification = new ScheduledNotification(scheduledNotificationData);
 
             context.ScheduledNotifications.Insert(scheduledNotification);
@@ -85,8 +76,6 @@ namespace NicolaParo.NetConf2022.NotificationSender.Services.Repositories
         }
         public async Task<bool> UpdateScheduledNotificationAsync(Guid id, ScheduledNotificationInfo scheduledNotificationData)
         {
-            using var context = CreateContext();
-
             var scheduledNotification = context.ScheduledNotifications.FindOne(sn => sn.Id == id);
             if (scheduledNotification is null)
                 return false;
@@ -102,8 +91,6 @@ namespace NicolaParo.NetConf2022.NotificationSender.Services.Repositories
         }
         public async Task<bool> DeleteScheduledNotificationAsync(Guid id)
         {
-            using var context = CreateContext();
-
             var scheduledNotification = context.ScheduledNotifications.FindOne(sn => sn.Id == id);
             if (scheduledNotification is null)
                 return false;
