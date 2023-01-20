@@ -13,14 +13,9 @@ namespace NicolaParo.NetConf2022.NotificationSender.Api
     {
         public static void AddRepositories(this IServiceCollection services, ConfigurationModel configurationModel)
         {
-            services.AddSingleton<IContactsRepository, ContactsRepository>(ctx =>
-            {
-                return new ContactsRepository(configurationModel.DataFilePath);
-            });
-            services.AddSingleton<IScheduledNotificationsRepository, ScheduledNotificationsRepository>(ctx =>
-            {
-                return new ScheduledNotificationsRepository(configurationModel.DataFilePath);
-            });
+            services.AddSingleton<NotificationSenderContext>(ctx => new NotificationSenderContext(configurationModel.DataFilePath));
+            services.AddSingleton<IContactsRepository, ContactsRepository>();
+            services.AddSingleton<IScheduledNotificationsRepository, ScheduledNotificationsRepository>();
         }
         public static void AddBackgroundServices(this IServiceCollection services, ConfigurationModel configurationModel)
         {

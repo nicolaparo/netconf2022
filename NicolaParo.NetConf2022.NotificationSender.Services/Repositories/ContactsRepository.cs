@@ -22,43 +22,33 @@ namespace NicolaParo.NetConf2022.NotificationSender.Services.Repositories
 
     public class ContactsRepository : IContactsRepository
     {
-        private readonly string databaseFileName;
+        private readonly NotificationSenderContext context;
 
-        public ContactsRepository(string contactsFileName)
+        public ContactsRepository(NotificationSenderContext context)
         {
-            this.databaseFileName = contactsFileName;
+            this.context = context;
         }
-
-        private NotificationSenderContext CreateContext() => new NotificationSenderContext(databaseFileName);
 
         public Task<Contact[]> GetContactsAsync(Expression<Func<Contact, bool>> predicate)
         {
-            using var context = CreateContext();
-
             var contacts = context.Contacts.Query().Where(predicate).ToArray();
 
             return Task.FromResult(contacts);
         }
         public Task<Contact[]> GetContactsAsync()
         {
-            using var context = CreateContext();
-
             var contacts = context.Contacts.FindAll();
 
             return Task.FromResult(contacts.ToArray());
         }
         public Task<Contact> GetContactByIdAsync(Guid id)
         {
-            using var context = CreateContext();
-
             var contact = context.Contacts.FindOne(c => c.Id == id);
 
             return Task.FromResult(contact);
         }
         public async Task<Guid> CreateContactAsync(ContactInfo contactData)
         {
-            using var context = CreateContext();
-
             var contact = new Contact(contactData);
 
             context.Contacts.Insert(contact);
@@ -70,8 +60,6 @@ namespace NicolaParo.NetConf2022.NotificationSender.Services.Repositories
         }
         public async Task<bool> UpdateContactAsync(Guid id, ContactInfo contactData)
         {
-            using var context = CreateContext();
-
             var contact = context.Contacts.FindOne(c => c.Id == id);
             if (contact is null)
                 return false;
@@ -87,8 +75,6 @@ namespace NicolaParo.NetConf2022.NotificationSender.Services.Repositories
         }
         public async Task<bool> DeleteContactAsync(Guid id)
         {
-            using var context = CreateContext();
-
             var contact = context.Contacts.FindOne(c => c.Id == id);
             if (contact is null)
                 return false;
