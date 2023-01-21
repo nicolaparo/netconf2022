@@ -1,17 +1,34 @@
 ﻿@page "/scheduled-notifications"
 
-@inject IJSRuntime jsRuntime
-@implements IDisposable
+@using Microsoft.AspNetCore.Components.QuickGrid
 
-<h3>Hello World!</h3>
+@inject IScheduledNotificationsRepository scheduledNotificationsRepository
+
+<QuickGrid Items="notifications" Virtualize=true>
+    <TemplateColumn>
+        <i class="fas fa-info" title="@context.Id"></i>
+    </TemplateColumn>
+    <PropertyColumn Sortable=true Property="n => n.ScheduleSendAt"></PropertyColumn>
+    <PropertyColumn Sortable=true Property="n => n.ActuallySentAt"></PropertyColumn>
+    <TemplateColumn Title="Title">
+        @context.Notification?.Title
+    </TemplateColumn>
+    <TemplateColumn Title="Contact">
+        @context.Notification?.Contact?.FullName
+    </TemplateColumn>
+</QuickGrid>
 
 @code {
+    private PaginationState paginationState = new();
+    private IQueryable<ScheduledNotification> notifications;
 
-    protected override Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        return base.OnAfterRenderAsync(firstRender);
+        if(firstRender)
+        {
+            notifications = (await scheduledNotificationsRepository.GetScheduledNotificationsAsync()).AsQueryable();
+            StateHasChanged();
+        }
     }
-
-    public void Dispose() { }
 
 }

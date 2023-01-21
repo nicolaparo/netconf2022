@@ -1,0 +1,25 @@
+﻿@using NicolaParo.NetConf2022.NotificationSender.Models
+
+<h5 class="mb-2">@Contact.FullName</h5>
+
+<div class="mb-2">
+    <label><i class="fas fa-envelope" /> Email</label>
+    <p>@Contact.Email?.Address&nbsp;</p>
+</div>
+<div class="mb-2">
+    <label><i class="fas fa-phone" /> Phone</label>
+    <p>@Contact.Phone?.Number&nbsp;</p>
+</div>
+<div class="mb-2">
+    <label><i class="fab fa-telegram" /> Telegram</label>
+    <p>
+        @Contact.Telegram?.Username&nbsp; <br />
+        @Contact.Telegram?.ChatId&nbsp;
+    </p>
+</div>
+
+@code {
+    [Parameter]
+    public Contact Contact { get; set; }
+
+}

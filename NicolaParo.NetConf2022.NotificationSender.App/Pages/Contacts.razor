@@ -6,37 +6,34 @@
 @inject IContactsRepository contactsRepository
 
 <div class="mx-auto mb-4 w-50">
-    <input type="text" class="form-control" placeholder="Search..." value="@searchValue" @onchange="(e) => searchValue = e.Value.ToString() " />
+    <input type="text" class="form-control" placeholder="Search..." @bind="@searchValue" @bind:event="oninput" @bind:after="() => SearchAsync()" />
 </div>
 
-<div style="overflow: auto; height: 25em">
-    <QuickGrid Items="contacts" Class="table" Virtualize=true>
-        <TemplateColumn Context="c" Title="Id">
-            <span title="@c.Id">
-                @(c.Id.ToString()[..8])...
-            </span>
-        </TemplateColumn>
-        <PropertyColumn Sortable=true Property="c => c.FirstName" Title="First Name" />
-        <PropertyColumn Sortable=true Property="c => c.LastName" Title="Last Name" />
-        <TemplateColumn Context="c" Title="Email">
-            @c.Email?.Address
-        </TemplateColumn>
-        <TemplateColumn Context="c" Title="Phone Number">
-            @c.Phone?.Number
-        </TemplateColumn>
-        <TemplateColumn Context="c" Title="Telegram ChatId">
-            @c.Telegram?.ChatId
-        </TemplateColumn>
-    </QuickGrid>
+<div class="row">
+    @if (contacts is not null)
+    {
+        @foreach (var contact in contacts)
+        {
+            <div class="col-4">
+                <div class="card mb-4 p-3">
+                    <div class="card-body">
+                        <ContactDisplay Contact="contact" />
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-info" href="/compose/@contact.Id">
+                            Send Notification
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
 </div>
-
-<Paginator Value="paginationState" />
 
 @code {
     private string searchValue;
 
     private IQueryable<Contact> contacts;
-    private PaginationState paginationState = new();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -45,6 +42,14 @@
             contacts = (await contactsRepository.GetContactsAsync()).AsQueryable();
             StateHasChanged();
         }
+    }
+
+    public async Task SearchAsync()
+    {
+        contacts = (await contactsRepository.GetContactsAsync())
+            .Where(c => c.FullName.ToLower().Contains(searchValue))
+            .AsQueryable();
+        StateHasChanged();
     }
 
 }

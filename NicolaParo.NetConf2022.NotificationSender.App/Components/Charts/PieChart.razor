@@ -1,0 +1,59 @@
+﻿@using NicolaParo.NetConf2022.NotificationSender.App.Components.Charts.Models
+
+<style>
+
+    .chart .bar {
+        opacity: .5;
+        transition: all 0.5s;
+    }
+
+        .chart .bar:hover {
+            opacity: 1;
+        }
+
+</style>
+
+<svg class="chart" viewBox="0 0 100 100">
+
+    @if (Items is not null)
+    {
+        @foreach (var (item, path) in Items.Zip(CreateSvgPaths(Items)))
+        {
+            <path class="bar" fill="@item.HtmlColor" d="@path" />
+        }
+    }
+</svg>
+
+@code {
+
+    [Parameter]
+    public ChartItem[] Items { get; set; }
+
+    public void Redraw()
+    {
+        StateHasChanged();
+    }
+
+    private static IEnumerable<string> CreateSvgPaths(ChartItem[] items)
+    {
+        float angle = 0;
+        var valueSum = items.Sum(i => i.Value);
+
+        foreach (var item in items)
+        {
+            var (y1, x1) = MathF.SinCos(angle * 2 * MathF.PI);
+
+            y1 = 50 - y1 * 50;
+            x1 = 50 + x1 * 50;
+
+            angle += item.Value / valueSum;
+
+            var (y2, x2) = MathF.SinCos(angle * 2 * MathF.PI);
+
+            y2 = 50 - y2 * 50;
+            x2 = 50 + x2 * 50;
+
+            yield return $"M {x1} {y1} A 50 50 0 {(item.Value / valueSum > .5 ? 1 : 0)} 0 {x2} {y2} L 50 50";
+        }
+    }
+}

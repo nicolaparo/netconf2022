@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NicolaParo.NetConf2022.Noti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NicolaParo.NetConf2022.NotificationSender.Configuration", "NicolaParo.NetConf2022.NotificationSender.Configuration\NicolaParo.NetConf2022.NotificationSender.Configuration.csproj", "{BAC2881D-F9BE-4047-866F-C1EC053223CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NicolaParo.NetConf2022.NotificationSender.App", "NicolaParo.NetConf2022.NotificationSender.App\NicolaParo.NetConf2022.NotificationSender.App.csproj", "{17018C94-A9E8-419A-A091-541ACFB25966}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NicolaParo.NetConf2022.NotificationSender.App", "NicolaParo.NetConf2022.NotificationSender.App\NicolaParo.NetConf2022.NotificationSender.App.csproj", "{17018C94-A9E8-419A-A091-541ACFB25966}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

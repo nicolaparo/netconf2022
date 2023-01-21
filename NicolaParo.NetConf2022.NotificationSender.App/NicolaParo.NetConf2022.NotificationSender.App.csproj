@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.CustomElements" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid" Version="0.1.0-alpha.22351.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
@@ -16,6 +16,10 @@
     <ProjectReference Include="..\NicolaParo.NetConf2022.NotificationSender.Api\NicolaParo.NetConf2022.NotificationSender.Api.csproj" />
     <ProjectReference Include="..\NicolaParo.NetConf2022.NotificationSender.Configuration\NicolaParo.NetConf2022.NotificationSender.Configuration.csproj" />
     <ProjectReference Include="..\NicolaParo.NetConf2022.NotificationSender.Services\NicolaParo.NetConf2022.NotificationSender.Services.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

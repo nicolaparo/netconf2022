@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using NicolaParo.NetConf2022.NotificationSender.Api;
+using NicolaParo.NetConf2022.NotificationSender.App.Components.Widgets;
 using NicolaParo.NetConf2022.NotificationSender.Configuration;
 using NicolaParo.NetConf2022.NotificationSender.Services;
 
@@ -13,7 +14,10 @@ public class Program
 
         var builder = WebApplication.CreateBuilder(args);
         builder.Services.AddRazorPages();
-        builder.Services.AddServerSideBlazor();
+        builder.Services.AddServerSideBlazor(options =>
+        {
+            options.RootComponents.RegisterCustomElement<SentNotificationsWidget>("sent-notifications-widget");
+        });
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

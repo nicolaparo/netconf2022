@@ -1,0 +1,63 @@
+﻿@inject IScheduledNotificationsRepository scheduledNotificationsRepository
+
+@using NicolaParo.NetConf2022.NotificationSender.App.Components.Charts
+@using NicolaParo.NetConf2022.NotificationSender.App.Components.Charts.Models
+
+<h4>Notifications Sent Per Day</h4>
+<div class="card">
+    <div class="card-body">
+        @if (items is not null)
+        {
+            <PieChart @ref=chart Items="items"></PieChart>
+
+            <hr />
+
+            <table class="table">
+                @foreach (var item in items)
+                {
+                    <tr>
+                        <td>
+                            <div style="width: 24px; height:24px;background:@(item.HtmlColor)">
+                            </div>
+                        </td>
+                        <td>
+                            @item.Label
+                        </td>
+                        <td>
+                            @item.Value
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+    </div>
+</div>
+
+@code {
+    private ChartItem[] items;
+    private PieChart chart;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var notifications = await scheduledNotificationsRepository.GetScheduledNotificationsAsync(sn => sn.ActuallySentAt != null);
+            items = CalculateItems(notifications);
+            StateHasChanged();
+        }
+    }
+
+    private static ChartItem[] CalculateItems(IEnumerable<ScheduledNotification> scheduledNotifications)
+    {
+        return scheduledNotifications.GroupBy(sn => sn.ScheduleSendAt.Date)
+            .OrderBy(g => g.Key)
+            .Select((g, i) => new ChartItem
+            {
+                Label = g.Key.DayOfWeek.ToString(),
+                Value = g.Count(),
+                HtmlColor = $"hsl(240, 100%, {((i+1) * 15) % 100}%",
+            })
+            .ToArray();
+    }
+
+}

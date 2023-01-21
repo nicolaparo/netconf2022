@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/" />
+    <link href="NicolaParo.NetConf2022.NotificationSender.App.styles.css" rel="stylesheet" />
+    <script src="_framework/blazor.server.js"></script>
+    <link href="https://bootswatch.com/5/cyborg/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Itemseller S.P.A. Dashboard</a>
+        </div>
+    </nav>
+
+    <main class="container my-4">
+
+        <h4>Alerts</h4>
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger">
+                    <h3>2</h3> Errors
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-warning">
+                    <h3>3</h3> Warning
+                </div>
+            </div>
+            <div class="col">
+                <div class="alert alert-info">
+                    <h3>15</h3> Info
+                </div>
+            </div>
+        </div>
+        <hr />
+
+        <div class="row">
+
+            <div class="col">
+                <sent-notifications-widget />
+            </div>
+
+            <div class="col">
+
+                <h4>News</h4>
+
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small>3 days ago</small>
+                        </div>
+                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                        <small>Donec id elit non mi porta.</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small class="text-muted">3 days ago</small>
+                        </div>
+                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                        <small class="text-muted">Donec id elit non mi porta.</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small class="text-muted">3 days ago</small>
+                        </div>
+                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                        <small class="text-muted">Donec id elit non mi porta.</small>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">List group item heading</h5>
+                            <small class="text-muted">3 days ago</small>
+                        </div>
+                        <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+                        <small class="text-muted">Donec id elit non mi porta.</small>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
