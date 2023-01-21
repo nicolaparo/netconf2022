@@ -19,8 +19,10 @@ namespace NicolaParo.NetConf2022.NotificationSender.DataInitializer
 
             var configurationModel = await ConfigurationModel.LoadFromFileAsync(@"..\..\_secrets\netConf2022\secrets.json");
 
-            var contactsRepository = new ContactsRepository(configurationModel.DataFilePath);
-            var scheduledNotifications = new ScheduledNotificationsRepository(configurationModel.DataFilePath);
+            var context = new NotificationSenderContext(configurationModel.DataFilePath);
+
+            var contactsRepository = new ContactsRepository(context);
+            var scheduledNotifications = new ScheduledNotificationsRepository(context);
 
             int contactsToCreate = 100;
             int notificationsToCreate = 5000;
